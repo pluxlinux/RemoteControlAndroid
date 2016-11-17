@@ -19,34 +19,25 @@ import JavaUtils.TCPManager.TcpConnection;
 import JavaUtils.UDPUtils.UDPBroadcast;
 
 public class MainActivity extends AppCompatActivity {
-    TcpConnection conToServer = null;
+    TcpConnection conToServer;
     long ts = 0;
     long te = 0;
     View.OnClickListener oc = new View.OnClickListener() {
         @Override
         public void onClick(final View view) {
-            Runnable r = new Runnable() {
+            new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        System.out.println("con noch nicht aufgebaut");
                         conToServer = TCPManager.connect(((TextView) view).getText().toString().split("\n")[1], 45340, false, null);
-                        System.out.println("con aufgebaut");
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                clientConnection();
-                            }
-                        });
+                        System.out.println("gggg");
                     } catch (IOException e) {
                         e.printStackTrace();
-                        System.out.println("fehlgeschlagen");
                     }
                 }
-            };
-            Thread t = new Thread(r);
-            t.start();
+            }).start();
 
+            clientConnection();
 
         }
 
@@ -107,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         UDPBroadcast.startNewBroadcastRequest(4960, "", true, 20000, new UDPBroadcast.UDPBroadcastResponseListener() {
             @Override
             public void process(String response, final InetAddress address) {
