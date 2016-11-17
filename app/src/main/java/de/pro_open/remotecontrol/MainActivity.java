@@ -75,14 +75,24 @@ public class MainActivity extends AppCompatActivity {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     te = System.currentTimeMillis();
                     if ((te - ts) < 150 && (int) (motionEvent.getX() - preX) < 20 && (int) (motionEvent.getY() - preY) < 20) {
-                        //Einfacher Linksklick
+                        conToServer.writeLine("leftClick");
                     } else if ((te - ts) > 150 && (int) (motionEvent.getX() - preX) < 20 && (int) (motionEvent.getY() - preY) < 20) {
-                        //Einfacher Rechtsklick
+                        conToServer.writeLine("rightClick");
                     }
                 }
                 return true;
             }
         });
+    }
+
+    private void sendMessageToServer(final String message){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                conToServer.writeLine(message);
+                conToServer.flush();
+            }
+        }).start();
     }
 
     @Override
