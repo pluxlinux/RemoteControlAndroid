@@ -25,22 +25,27 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener oc = new View.OnClickListener() {
         @Override
         public void onClick(final View view) {
-            new Thread(new Runnable() {
+            Runnable r = new Runnable() {
                 @Override
                 public void run() {
                     try {
+                        System.out.println("con noch nicht aufgebaut");
                         conToServer = TCPManager.connect(((TextView) view).getText().toString().split("\n")[1], 45340, false, null);
+                        System.out.println("con aufgebaut");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                clientConnection();
+                            }
+                        });
                     } catch (IOException e) {
                         e.printStackTrace();
+                        System.out.println("fehlgeschlagen");
                     }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            clientConnection();
-                        }
-                    });
                 }
-            }).start();
+            };
+            Thread t = new Thread(r);
+            t.start();
 
 
         }
