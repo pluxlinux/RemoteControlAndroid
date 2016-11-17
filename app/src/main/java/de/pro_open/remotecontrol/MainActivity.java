@@ -19,7 +19,7 @@ import JavaUtils.TCPManager.TcpConnection;
 import JavaUtils.UDPUtils.UDPBroadcast;
 
 public class MainActivity extends AppCompatActivity {
-    TcpConnection conToServer;
+    TcpConnection conToServer = null;
     long ts = 0;
     long te = 0;
     View.OnClickListener oc = new View.OnClickListener() {
@@ -33,10 +33,15 @@ public class MainActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            clientConnection();
+                        }
+                    });
                 }
             }).start();
 
-            clientConnection();
 
         }
 
@@ -64,13 +69,11 @@ public class MainActivity extends AppCompatActivity {
                     ts = System.currentTimeMillis();
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
                     c++;
-                    if (true) {
                         conToServer.writeLine("mouse " + (int) (motionEvent.getX() - prevX) + " " + (int) (motionEvent.getY() - prevY));
 
                         prevX = motionEvent.getX();
                         prevY = motionEvent.getY();
                         c = 0;
-                    }
                 }
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     te = System.currentTimeMillis();
