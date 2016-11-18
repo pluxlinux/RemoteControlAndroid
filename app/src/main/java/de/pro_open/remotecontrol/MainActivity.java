@@ -15,8 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 import java.net.InetAddress;
 
@@ -88,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
             float preX = 0;
             float preY = 0;
             int c = 0;
+            boolean mouseIsPressed = false;
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -98,20 +97,32 @@ public class MainActivity extends AppCompatActivity {
                     preX = motionEvent.getX();
                     preY = motionEvent.getY();
                     ts = System.currentTimeMillis();
+                    c = 0;
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
-                    c++;
+                    te = System.currentTimeMillis();
+                    if ((te - ts) > 500 && (int) (motionEvent.getX() - preX) < 5 && (int) (motionEvent.getY() - preY) < 5 && mouseIsPressed == false) {
+                        mouseIsPressed = true;
+                        conToServer.writeLine("mousePressed");
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            trackiv.setBackground(getResources().getDrawable(R.drawable.backgroundtrackpadmousepressed));
+                        }
+                    }
                         conToServer.writeLine("mouse " + (int) (motionEvent.getX() - prevX) + " " + (int) (motionEvent.getY() - prevY));
 
                         prevX = motionEvent.getX();
                         prevY = motionEvent.getY();
-                        c = 0;
                 }
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     te = System.currentTimeMillis();
-                    if ((te - ts) < 150 && (int) (motionEvent.getX() - preX) < 20 && (int) (motionEvent.getY() - preY) < 20) {
+                    if ((te - ts) < 150 && (int) (motionEvent.getX() - preX) < 20 && (int) (motionEvent.getY() - preY) < 20 && mouseIsPressed == false) {
                         conToServer.writeLine("leftClick");
-                    } else if ((te - ts) > 150 && (int) (motionEvent.getX() - preX) < 5 && (int) (motionEvent.getY() - preY) < 5 && (te - ts) < 1500) {
-                        conToServer.writeLine("rightClick");
+                    } else if (mouseIsPressed == true) {
+                        mouseIsPressed = false;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            trackiv.setBackground(getResources().getDrawable(R.drawable.backgroundtrackpad));
+                        }
+                        conToServer.writeLine("mouseReleased");
+
                     }
                 }
                 return true;
