@@ -49,6 +49,40 @@
         app:layout_marginTopPercent="5%"
         app:layout_widthPercent="20%" />
 
+    <Button
+        android:id="@+id/trackiv"
+        app:layout_widthPercent="100%"
+        app:layout_heightPercent="40%"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/backgroundtrackpad"
+
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/rightiv"
+        app:layout_widthPercent="40%"
+        app:layout_heightPercent="8%"
+        android:background="@drawable/right"
+        app:layout_marginTopPercent="40.5%"
+        app:layout_marginLeftPercent="60%"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/leftiv"
+        app:layout_widthPercent="40%"
+        app:layout_heightPercent="8%"
+        android:background="@drawable/left"
+        app:layout_marginTopPercent="40.5%"
+        android:visibility="invisible" />
+
+    <EditText
+        android:id="@+id/inputtv"
+        app:layout_widthPercent="100%"
+        app:layout_heightPercent="4%"
+        app:layout_marginTopPercent="49%"
+        android:visibility="invisible"
+        android:hint="Enter Text here" />
 
 </android.support.percent.PercentRelativeLayout>
 

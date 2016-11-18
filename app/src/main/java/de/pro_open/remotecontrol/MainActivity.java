@@ -3,12 +3,16 @@ package de.pro_open.remotecontrol;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -19,9 +23,16 @@ import JavaUtils.TCPManager.TcpConnection;
 import JavaUtils.UDPUtils.UDPBroadcast;
 
 public class MainActivity extends AppCompatActivity {
+    boolean flag = true;
+    Button trackiv;
+    Button left;
+    Button right;
+    EditText input;
     TcpConnection conToServer;
+    ScrollView sv;
     long ts = 0;
     long te = 0;
+    //OnclickListener for server buttons
     View.OnClickListener oc = new View.OnClickListener() {
         @Override
         public void onClick(final View view) {
@@ -41,12 +52,34 @@ public class MainActivity extends AppCompatActivity {
         }
 
     };
+
+    //OnClickListener for left/right click buttons
+    View.OnClickListener ocr = new View.OnClickListener() {
+        @Override
+        public void onClick(final View view) {
+            if (view.getId() == R.id.leftiv) {
+                conToServer.writeLine("leftClick");
+            } else {
+                conToServer.writeLine("rightClick");
+            }
+        }
+
+    };
     Boolean server_on = false;
 
     private void clientConnection() {
         final RelativeLayout rl = (RelativeLayout) findViewById(R.id.activity_main);
-        rl.removeAllViews();
-        rl.setOnTouchListener(new View.OnTouchListener() {
+        rl.removeView(sv);
+        input.setVisibility(View.VISIBLE);
+        trackiv.setVisibility(View.VISIBLE);
+        left.setVisibility(View.VISIBLE);
+        right.setVisibility(View.VISIBLE);
+        left.setOnClickListener(ocr);
+        right.setOnClickListener(ocr);
+
+        //OntouchListener for Trackpad
+        trackiv.setOnTouchListener(new View.OnTouchListener() {
+
             float prevX = 0;
             float prevY = 0;
             float preX = 0;
@@ -74,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                     te = System.currentTimeMillis();
                     if ((te - ts) < 150 && (int) (motionEvent.getX() - preX) < 20 && (int) (motionEvent.getY() - preY) < 20) {
                         conToServer.writeLine("leftClick");
-                    } else if ((te - ts) > 150 && (int) (motionEvent.getX() - preX) < 20 && (int) (motionEvent.getY() - preY) < 20 && (te - ts) < 1500) {
+                    } else if ((te - ts) > 150 && (int) (motionEvent.getX() - preX) < 10 && (int) (motionEvent.getY() - preY) < 10 && (te - ts) < 1500) {
                         conToServer.writeLine("rightClick");
                     }
                 }
@@ -97,6 +130,35 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        trackiv = (Button) findViewById(R.id.trackiv);
+        left = (Button) findViewById(R.id.leftiv);
+        right = (Button) findViewById(R.id.rightiv);
+        input = (EditText) findViewById(R.id.inputtv);
+        sv = (ScrollView) findViewById(R.id.sv);
+
+        input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+//Send key here
+                if (flag == true) {
+
+                    input.setText("");
+
+                    flag = false;
+                }
+            }
+        });
         UDPBroadcast.startNewBroadcastRequest(4960, "", true, 20000, new UDPBroadcast.UDPBroadcastResponseListener() {
             @Override
             public void process(String response, final InetAddress address) {
@@ -158,5 +220,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
 
 }
