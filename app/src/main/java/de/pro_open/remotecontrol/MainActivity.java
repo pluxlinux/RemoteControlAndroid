@@ -23,7 +23,6 @@ import JavaUtils.TCPManager.TcpConnection;
 import JavaUtils.UDPUtils.UDPBroadcast;
 
 public class MainActivity extends AppCompatActivity {
-    boolean flag = true;
     Button trackiv;
     Button left;
     Button right;
@@ -107,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                     te = System.currentTimeMillis();
                     if ((te - ts) < 150 && (int) (motionEvent.getX() - preX) < 20 && (int) (motionEvent.getY() - preY) < 20) {
                         conToServer.writeLine("leftClick");
-                    } else if ((te - ts) > 150 && (int) (motionEvent.getX() - preX) < 10 && (int) (motionEvent.getY() - preY) < 10 && (te - ts) < 1500) {
+                    } else if ((te - ts) > 150 && (int) (motionEvent.getX() - preX) < 5 && (int) (motionEvent.getY() - preY) < 5 && (te - ts) < 1500) {
                         conToServer.writeLine("rightClick");
                     }
                 }
@@ -151,12 +150,6 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
 
 //Send key here
-                if (flag == true) {
-
-                    input.setText("");
-
-                    flag = false;
-                }
             }
         });
         UDPBroadcast.startNewBroadcastRequest(4960, "", true, 20000, new UDPBroadcast.UDPBroadcastResponseListener() {
