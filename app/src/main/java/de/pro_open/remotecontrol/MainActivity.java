@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     try {
                         conToServer = TCPManager.connect(((TextView) view).getText().toString().split("\n")[1], 45340, false, null);
-                        System.out.println("gggg");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                     te = System.currentTimeMillis();
                     if ((te - ts) < 150 && (int) (motionEvent.getX() - preX) < 20 && (int) (motionEvent.getY() - preY) < 20) {
                         conToServer.writeLine("leftClick");
-                    } else if ((te - ts) > 150 && (int) (motionEvent.getX() - preX) < 20 && (int) (motionEvent.getY() - preY) < 20) {
+                    } else if ((te - ts) > 150 && (int) (motionEvent.getX() - preX) < 20 && (int) (motionEvent.getY() - preY) < 20 && (te - ts) < 1500) {
                         conToServer.writeLine("rightClick");
                     }
                 }
