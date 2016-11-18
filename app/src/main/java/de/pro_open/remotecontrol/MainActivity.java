@@ -137,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
         input = (EditText) findViewById(R.id.inputtv);
         sv = (ScrollView) findViewById(R.id.sv);
 
+        input.setText("p");
+
         input.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -150,9 +152,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(editable + ""!="") {
-                    sendMessageToServer(("keyboard " + editable).);
-                    input.setText("");
+                if(editable + ""!="p") {
+                    sendMessageToServer(("keyboard " + editable).substring(1));
+                    input.setText("p");
+                }else if(editable + ""!=""){
+                    sendMessageToServer("keyboard_backspace");
                 }
             }
         });
