@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
         left.setOnClickListener(ocr);
         right.setOnClickListener(ocr);
 
+        input.requestFocus();
+
         //OntouchListener for Trackpad
         trackiv.setOnTouchListener(new View.OnTouchListener() {
 
@@ -163,11 +165,18 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(editable + ""!="p") {
-                    sendMessageToServer(("keyboard " + editable).substring(1));
+                if(!(editable + "").equals("p")&&!(editable+"").isEmpty()) {
+                    if(editable.length()==2&&(editable+"").substring(1).equals(" ")){
+                        sendMessageToServer("keyboard_space");
+                    }else {
+                        sendMessageToServer("keyboard " + (editable + "").substring(1));
+                    }
                     input.setText("p");
-                }else if(editable + ""!=""){
+                    input.setSelection(1);
+                }else if((editable + "").isEmpty()){
                     sendMessageToServer("keyboard_backspace");
+                    input.setText("p");
+                    input.setSelection(1);
                 }
             }
         });
