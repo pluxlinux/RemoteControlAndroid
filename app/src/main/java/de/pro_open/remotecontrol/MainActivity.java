@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                     c = 0;
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
                     te = System.currentTimeMillis();
-                    if ((te - ts) > 500 && (int) (motionEvent.getX() - preX) < 5 && (int) (motionEvent.getY() - preY) < 5 && mouseIsPressed == false) {
+                    if ((te - ts) > 700 && (int) (motionEvent.getX() - preX) < 3 && (int) (motionEvent.getY() - preY) < 3 && mouseIsPressed == false) {
                         mouseIsPressed = true;
                         conToServer.writeLine("mousePressed");
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     te = System.currentTimeMillis();
-                    if ((te - ts) < 150 && (int) (motionEvent.getX() - preX) < 20 && (int) (motionEvent.getY() - preY) < 20 && mouseIsPressed == false) {
+                    if ((te - ts) < 150 && (int) (motionEvent.getX() - preX) < 5 && (int) (motionEvent.getY() - preY) < 5 && mouseIsPressed == false) {
                         conToServer.writeLine("leftClick");
                     } else if (mouseIsPressed == true) {
                         mouseIsPressed = false;
