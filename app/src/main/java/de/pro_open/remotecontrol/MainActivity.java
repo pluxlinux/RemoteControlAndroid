@@ -15,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.net.InetAddress;
 
@@ -149,17 +151,13 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
-//Send key here
-                if (flag == true) {
-
+                if(editable + ""!="") {
+                    sendMessageToServer(("keyboard " + editable).);
                     input.setText("");
-
-                    flag = false;
                 }
             }
         });
-        UDPBroadcast.startNewBroadcastRequest(4960, "", true, 20000, new UDPBroadcast.UDPBroadcastResponseListener() {
+        UDPBroadcast.startNewBroadcastRequest(4960, "", true, 10000, new UDPBroadcast.UDPBroadcastResponseListener() {
             @Override
             public void process(String response, final InetAddress address) {
                 if (response != null && response.equalsIgnoreCase("server_online")) {
@@ -179,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(20000L);
+                    Thread.sleep(10000L);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
