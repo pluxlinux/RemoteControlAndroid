@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                     c = 0;
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
                     te = System.currentTimeMillis();
-                    if ((te - ts) > 300 && (int) (motionEvent.getX() - preX) < 5 && (int) (motionEvent.getY() - preY) < 5 && mouseIsPressed == false) {
+                    if ((te - ts) > 500 && (int) (motionEvent.getX() - preX) < 5 && (int) (motionEvent.getY() - preY) < 5 && mouseIsPressed == false) {
                         mouseIsPressed = true;
                         conToServer.writeLine("mousePressed");
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
