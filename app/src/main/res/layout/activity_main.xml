@@ -82,7 +82,9 @@
         app:layout_heightPercent="4%"
         app:layout_marginTopPercent="49%"
         android:visibility="invisible"
-        android:hint="Enter Text here" />
+        android:hint="Enter Text here"
+        android:selectAllOnFocus="true"
+        android:singleLine="true" />
 
 </android.support.percent.PercentRelativeLayout>
 
