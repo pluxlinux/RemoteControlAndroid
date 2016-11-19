@@ -165,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
                             trackiv.setBackground(getResources().getDrawable(R.drawable.backgroundtrackpad));
                         }
                         conToServer.writeLine("mouseReleased");
-
                     }
                 }
                 return true;

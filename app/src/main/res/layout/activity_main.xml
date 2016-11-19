@@ -104,7 +104,8 @@
         android:visibility="invisible"
         android:hint="Enter Text here"
         android:selectAllOnFocus="true"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:inputType="textFilter|textMultiLine" />
 
 </android.support.percent.PercentRelativeLayout>
 
