@@ -288,6 +288,21 @@ public class MainActivity extends AppCompatActivity {
                             case "&":
                                 sendMessageToServer("keyboard_custom AND");
                                 break;
+                            case "+":
+                                sendMessageToServer("keyboard_custom PLUS");
+                                break;
+                            case "\n":
+                                sendMessageToServer("keyboard_custom ENTER");
+                                break;
+                            case ",":
+                                sendMessageToServer("keyboard_custom COMMA");
+                                break;
+                            case ".":
+                                sendMessageToServer("keyboard_custom DOT");
+                                break;
+                            case "-":
+                                sendMessageToServer("keyboard_custom MINUS");
+                                break;
                             default:
                                 sendMessageToServer("keyboard " + (editable + "").substring(1));
                                 break;
