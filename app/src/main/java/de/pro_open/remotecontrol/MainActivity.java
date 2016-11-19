@@ -26,9 +26,13 @@ public class MainActivity extends AppCompatActivity {
     Button trackiv;
     Button left;
     Button right;
+    Button dpi;
+    Button timeUntilMousePressed;
     EditText input;
     TcpConnection conToServer;
     ScrollView sv;
+    int multiplier = 1;
+    int ms = 500;
     long ts = 0;
     long te = 0;
     //OnclickListener for server buttons
@@ -56,9 +60,35 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener ocr = new View.OnClickListener() {
         @Override
         public void onClick(final View view) {
+            switch (view.getId()) {
+                case R.id.leftiv:
+                    conToServer.writeLine("leftClick");
+                    break;
+                case R.id.rightiv:
+                    conToServer.writeLine("rightClick");
+                    break;
+                case R.id.timeuntilmousepressediv:
+                    if (ms < 1000) {
+                        ms += 100;
+                    } else {
+                        ms = 300;
+                    }
+                    timeUntilMousePressed.setText(ms + "ms");
+                    break;
+                case R.id.dpiv:
+                    if (multiplier < 4) {
+                        multiplier++;
+                    } else {
+                        multiplier = 1;
+                    }
+                    dpi.setText("dpi lv " + multiplier);
+                    break;
+
+
+            }
             if (view.getId() == R.id.leftiv) {
                 conToServer.writeLine("leftClick");
-            } else {
+            } else if (view.getId() == R.id.rightiv) {
                 conToServer.writeLine("rightClick");
             }
         }
@@ -73,6 +103,10 @@ public class MainActivity extends AppCompatActivity {
         trackiv.setVisibility(View.VISIBLE);
         left.setVisibility(View.VISIBLE);
         right.setVisibility(View.VISIBLE);
+        timeUntilMousePressed.setVisibility(View.VISIBLE);
+        dpi.setVisibility(View.VISIBLE);
+        timeUntilMousePressed.setOnClickListener(ocr);
+        dpi.setOnClickListener(ocr);
         left.setOnClickListener(ocr);
         right.setOnClickListener(ocr);
 
@@ -100,21 +134,25 @@ public class MainActivity extends AppCompatActivity {
                     c = 0;
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
                     te = System.currentTimeMillis();
-                    if ((te - ts) > 700 && (int) (motionEvent.getX() - preX) < 3 && (int) (motionEvent.getY() - preY) < 3 && mouseIsPressed == false) {
+                    if ((te - ts) > ms && (int) (motionEvent.getX() - preX) < 2 && (int) (motionEvent.getY() - preY) < 2 && mouseIsPressed == false) {
+                        System.out.println("te: " + te);
+                        System.out.println("ts: " + ts);
+                        System.out.println(motionEvent.getX());
+                        System.out.println(preX);
                         mouseIsPressed = true;
                         conToServer.writeLine("mousePressed");
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             trackiv.setBackground(getResources().getDrawable(R.drawable.backgroundtrackpadmousepressed));
                         }
                     }
-                        conToServer.writeLine("mouse " + (int) (motionEvent.getX() - prevX) + " " + (int) (motionEvent.getY() - prevY));
+                    conToServer.writeLine("mouse " + ((int) (motionEvent.getX() - prevX)) * multiplier + " " + ((int) (motionEvent.getY() - prevY)) * multiplier);
 
                         prevX = motionEvent.getX();
                         prevY = motionEvent.getY();
                 }
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     te = System.currentTimeMillis();
-                    if ((te - ts) < 150 && (int) (motionEvent.getX() - preX) < 5 && (int) (motionEvent.getY() - preY) < 5 && mouseIsPressed == false) {
+                    if ((te - ts) < 150 && (int) (motionEvent.getX() - preX) < 4 && (int) (motionEvent.getY() - preY) < 4 && mouseIsPressed == false) {
                         conToServer.writeLine("leftClick");
                     } else if (mouseIsPressed == true) {
                         mouseIsPressed = false;
@@ -149,6 +187,8 @@ public class MainActivity extends AppCompatActivity {
         right = (Button) findViewById(R.id.rightiv);
         input = (EditText) findViewById(R.id.inputtv);
         sv = (ScrollView) findViewById(R.id.sv);
+        dpi = (Button) findViewById(R.id.dpiv);
+        timeUntilMousePressed = (Button) findViewById(R.id.timeuntilmousepressediv);
 
         input.setText("p");
 
