@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 if(!(editable + "").equals("p")&&!(editable+"").isEmpty()) {
 
-                    if (editable.length() == 2) {
+                    if (editable.length() < 1) {
                         switch ((editable + "").substring(1)) {
                             case " ":
                                 sendMessageToServer("keyboard_space");
@@ -289,6 +289,10 @@ public class MainActivity extends AppCompatActivity {
                             case "&":
                                 sendMessageToServer("keyboard_custom AND");
                                 break;
+                            default:
+                                sendMessageToServer("keyboard " + (editable + "").substring(1));
+                                break;
+
 
 
                         }

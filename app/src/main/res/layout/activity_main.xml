@@ -100,7 +100,7 @@
         android:id="@+id/inputtv"
         app:layout_widthPercent="100%"
         app:layout_heightPercent="4%"
-        app:layout_marginTopPercent="49%"
+        app:layout_marginTopPercent="52%"
         android:visibility="invisible"
         android:hint="Enter Text here"
         android:selectAllOnFocus="true"
