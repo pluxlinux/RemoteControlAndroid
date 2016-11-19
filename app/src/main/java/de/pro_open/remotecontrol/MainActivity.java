@@ -71,9 +71,14 @@ public class MainActivity extends AppCompatActivity {
                     if (ms < 1000) {
                         ms += 100;
                     } else {
-                        ms = 300;
+                        ms = 200;
                     }
-                    timeUntilMousePressed.setText(ms + "ms");
+                    if (ms == 200) {
+                        timeUntilMousePressed.setText("OFF");
+                    } else {
+                        timeUntilMousePressed.setText(ms + "ms");
+                    }
+
                     break;
                 case R.id.dpiv:
                     if (multiplier < 4) {
@@ -134,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                     c = 0;
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
                     te = System.currentTimeMillis();
-                    if ((te - ts) > ms && (int) (motionEvent.getX() - preX) < 2 && (int) (motionEvent.getY() - preY) < 2 && mouseIsPressed == false) {
+                    if ((te - ts) > ms && (int) (motionEvent.getX() - preX) < 2 && (int) (motionEvent.getY() - preY) < 2 && mouseIsPressed == false && ms != 200) {
                         System.out.println("te: " + te);
                         System.out.println("ts: " + ts);
                         System.out.println(motionEvent.getX());
@@ -206,8 +211,87 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 if(!(editable + "").equals("p")&&!(editable+"").isEmpty()) {
-                    if(editable.length()==2&&(editable+"").substring(1).equals(" ")){
-                        sendMessageToServer("keyboard_space");
+
+                    if (editable.length() == 2) {
+                        switch ((editable + "").substring(1)) {
+                            case " ":
+                                sendMessageToServer("keyboard_space");
+                                break;
+                            case "?":
+                                sendMessageToServer("keyboard_custom QUESTION");
+                                break;
+                            case "!":
+                                sendMessageToServer("keyboard_custom EXCLAMATION");
+                                break;
+                            case "\"":
+                                sendMessageToServer("keyboard_custom QUOTATION");
+                                break;
+                            case "§":
+                                sendMessageToServer("keyboard_custom PARAGRAPH");
+                                break;
+                            case "$":
+                                sendMessageToServer("keyboard_custom DOLLAR");
+                                break;
+                            case "/":
+                                sendMessageToServer("keyboard_custom SLASH");
+                                break;
+                            case "(":
+                                sendMessageToServer("keyboard_custom BRACKET-OPEN");
+                                break;
+                            case ")":
+                                sendMessageToServer("keyboard_custom BRACKET-CLOSE");
+                                break;
+                            case "=":
+                                sendMessageToServer("keyboard_custom EQUAL");
+                                break;
+                            case "*":
+                                sendMessageToServer("keyboard_custom STAR");
+                                break;
+                            case "'":
+                                sendMessageToServer("keyboard_custom SINGLEQUOTATION");
+                                break;
+                            case ":":
+                                sendMessageToServer("keyboard_custom COLON");
+                                break;
+                            case ";":
+                                sendMessageToServer("keyboard_custom SEMICOLON");
+                                break;
+                            case "_":
+                                sendMessageToServer("keyboard_custom COATING");
+                                break;
+                            case "@":
+                                sendMessageToServer("keyboard_custom AT");
+                                break;
+                            case "€":
+                                sendMessageToServer("keyboard_custom EURO");
+                                break;
+                            case "\\":
+                                sendMessageToServer("keyboard_custom BACKSLASH");
+                                break;
+                            case "}":
+                                sendMessageToServer("keyboard_custom SWIFT-BRACKET-CLOSE");
+                                break;
+                            case "{":
+                                sendMessageToServer("keyboard_custom SWIFT-BRACKET-OPEN");
+                                break;
+                            case "[":
+                                sendMessageToServer("keyboard_custom ECKE-BRACKET-OPEN");
+                                break;
+                            case "]":
+                                sendMessageToServer("keyboard_custom ECKE-BRACKET-CLOSE");
+                                break;
+                            case "~":
+                                sendMessageToServer("keyboard_custom APRX");
+                                break;
+                            case "%":
+                                sendMessageToServer("keyboard_custom PERCENT");
+                                break;
+                            case "&":
+                                sendMessageToServer("keyboard_custom AND");
+                                break;
+
+
+                        }
                     }else {
                         sendMessageToServer("keyboard " + (editable + "").substring(1));
                     }
