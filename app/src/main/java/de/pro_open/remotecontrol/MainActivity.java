@@ -23,6 +23,7 @@ import JavaUtils.TCPManager.TcpConnection;
 import JavaUtils.UDPUtils.UDPBroadcast;
 
 public class MainActivity extends AppCompatActivity {
+    boolean inarea = true;
     Button trackiv;
     Button left;
     Button right;
@@ -137,18 +138,22 @@ public class MainActivity extends AppCompatActivity {
                     preY = motionEvent.getY();
                     ts = System.currentTimeMillis();
                     c = 0;
+                    inarea = true;
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
                     te = System.currentTimeMillis();
-                    if ((te - ts) > ms && (int) (motionEvent.getX() - preX) < 2 && (int) (motionEvent.getY() - preY) < 2 && mouseIsPressed == false && ms != 200) {
-                        System.out.println("te: " + te);
+                    if ((te - ts) > ms && (motionEvent.getX() - preX) < 2 && (motionEvent.getY() - preY) < 2 && mouseIsPressed == false && ms != 200 && inarea == true) {
+                        /*System.out.println("te: " + te);
                         System.out.println("ts: " + ts);
                         System.out.println(motionEvent.getX());
-                        System.out.println(preX);
+                        System.out.println(preX);*/
                         mouseIsPressed = true;
                         conToServer.writeLine("mousePressed");
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             trackiv.setBackground(getResources().getDrawable(R.drawable.backgroundtrackpadmousepressed));
                         }
+                    }
+                    if (mouseIsPressed == false && ((motionEvent.getX() - preX) > 2 || (motionEvent.getY() - preY) > 2)) {
+                        inarea = false;
                     }
                     conToServer.writeLine("mouse " + ((int) (motionEvent.getX() - prevX)) * multiplier + " " + ((int) (motionEvent.getY() - prevY)) * multiplier);
 
