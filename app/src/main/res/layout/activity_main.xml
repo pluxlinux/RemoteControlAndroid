@@ -63,7 +63,7 @@
         android:id="@+id/rightiv"
         app:layout_widthPercent="20%"
         app:layout_heightPercent="8%"
-        android:background="@drawable/right"
+        android:background="@drawable/rightbuttonremade"
         app:layout_marginTopPercent="40.5%"
         app:layout_marginLeftPercent="80%"
         android:visibility="invisible" />
@@ -72,7 +72,7 @@
         android:id="@+id/leftiv"
         app:layout_widthPercent="20%"
         app:layout_heightPercent="8%"
-        android:background="@drawable/left"
+        android:background="@drawable/leftbuttonremade"
         app:layout_marginTopPercent="40.5%"
         android:visibility="invisible" />
 
@@ -104,6 +104,7 @@
         android:visibility="invisible"
         android:hint="Enter Text here"
         android:selectAllOnFocus="true"
+        android:background="@drawable/button_border"
         android:singleLine="true"
         android:inputType="textFilter|textMultiLine" />
 

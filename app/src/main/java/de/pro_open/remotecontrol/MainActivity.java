@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         dpi = (Button) findViewById(R.id.dpiv);
         timeUntilMousePressed = (Button) findViewById(R.id.timeuntilmousepressediv);
 
-        input.setText("p");
+        input.setText(" ");
 
         input.addTextChangedListener(new TextWatcher() {
             @Override
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(!(editable + "").equals("p")&&!(editable+"").isEmpty()) {
+                if (!(editable + "").equals(" ") && !(editable + "").isEmpty()) {
 
                     if (editable.length() > 1) {
                         switch ((editable + "").substring(1)) {
@@ -318,11 +318,11 @@ public class MainActivity extends AppCompatActivity {
                     }else {
                         sendMessageToServer("keyboard " + (editable + "").substring(1));
                     }
-                    input.setText("p");
+                    input.setText(" ");
                     input.setSelection(1);
                 }else if((editable + "").isEmpty()){
                     sendMessageToServer("keyboard_backspace");
-                    input.setText("p");
+                    input.setText(" ");
                     input.setSelection(1);
                 }
             }
